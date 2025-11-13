@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# avoid these
+.env
+myenv
+
 # Distribution / packaging
 .Python
 build/
