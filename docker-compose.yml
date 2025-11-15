@@ -14,6 +14,27 @@ services:
       # default to dev if not set
       - APP_ENV=${APP_ENV:-dev}
     restart: unless-stopped
+
+  worker:
+    build: .
+    container_name: celery_worker
+    command: celery -A app.services.celery worker --loglevel=INFO
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - api
+
+  beat:
+    build: .
+    container_name: celery_beat
+    command: celery -A app.services.celery beat --loglevel=INFO
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - api
+      
   db:
     image: postgres:14
     environment:
